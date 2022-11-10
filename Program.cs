@@ -6,13 +6,13 @@ namespace fotored
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\assas\Desktop\Camera";
+            string path = @"C:\Camera";     //add input of directory in future
             string subpath = @"1\1";
             DirectoryInfo dirinf = new DirectoryInfo(path);
             dirinf.CreateSubdirectory(subpath);
             if (Directory.Exists(path))
             {
-                Console.WriteLine("Файлы: ");
+                Console.WriteLine("files: ");
                 string[] files = Directory.GetFiles(path);
                 int numoffile = files.Length;
                 
@@ -23,12 +23,12 @@ namespace fotored
                     if (filein.Exists)
                     {
 
-                        Console.WriteLine("Дата создания: {0}, имя {1}", filein.LastWriteTime, filein.Name);
+                        Console.WriteLine("Write Time: {0}, name {1}", filein.LastWriteTime, filein.Name);
                     }
 
                 }
 
-                for (int i = 0; numoffile >= i; i++)          //делаем сравнение каждой строки с последующей по времени изменения файла
+                for (int i = 0; numoffile >= i; i++)                                //comparing files by creation time
                 {
                     if (i + 1 == numoffile)
                     {
@@ -43,20 +43,20 @@ namespace fotored
                     TimeSpan date3 = date2 - date1;
                     string name = filedate.Name;
 
-                    if (date3.Minutes <= 3.5)           //если разница во времени меньше 4минут то скидываем в заготовленную папку 
+                    if (date3.Minutes <= 3.5)           //if the time difference is less than 4 minutes, then we throw it into one prepared folder
                     {
-                        string newpath = (path + @"\" + subpath + @"\" + name);    //путь для перемещения файла -куда
+                        string newpath = (path + @"\" + subpath + @"\" + name);     //the path to move the file to
                         FileInfo filetrans = new FileInfo(files[i]);
-                        if (filetrans.Exists)  //проверка 
+                        if (filetrans.Exists)                                       //check
                         {
                            
-                            filetrans.CopyTo(newpath, true);   //перемещение
+                            filetrans.CopyTo(newpath, true);                        //copy
                         }
                     }
-                    else                       //иначе создаем новую папку и скидываем туда
+                    else                                                            //otherwise, we create a new folder and drop it there
                     {
-                        string newpath = (path + @"\" + subpath + @"\" + name);     // путь для перещения файла
-                        FileInfo filetrans1 = new FileInfo(files[i]);               // переносим файл с которого проверяли
+                        string newpath = (path + @"\" + subpath + @"\" + name);     //the path to move the file to
+                        FileInfo filetrans1 = new FileInfo(files[i]);               //we transfer the file with which the others were compared
 
                         if (filetrans1.Exists)
                         {
@@ -66,7 +66,7 @@ namespace fotored
                         subpath = subpath + "1";
                         dirinf.CreateSubdirectory(subpath);
                         string newpath1 = (path + @"\" + subpath + @"\" + name);
-                        FileInfo filetrans = new FileInfo(files[i+1]);               // переносим файл созданный позже на 4минуты в новую папку
+                        FileInfo filetrans = new FileInfo(files[i+1]);               //we transfer the file created later for 4 minutes to a new folder
 
                         if (filetrans.Exists)
                         {
